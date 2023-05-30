@@ -36,13 +36,17 @@ public class ThreadTwoHashMapBroken extends Thread {
             public void run(){
                 tm.runMapOfSize(6);
             }
-        }.start();
+        }.start(); //it looks like the ones that get started before an exception continue to run
+                    // this makes sense since they are their own threads
         new Thread("Run of " + 8){
             public void run(){
                 tm.runMapOfSize(8);
             }
         }.start();
-
+    //the issue may be 6 or 8 trying to access the hashmap while the other has it open, 6 seems to fail a lot more than 8
+    //when i remove one of the threads it stops breaking
+    //it is odd to me that this is actually a hashmap of threads rather than there being a hash map of threads in a method
+    //i get concurrent modification expeptions and illegal state exceptions
     }
 
     private void runMapOfSize(int size) {
